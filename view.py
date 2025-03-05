@@ -1,5 +1,6 @@
 from sqlmodel import Session, select
 from models import Conta, Historico, Status, Tipos
+from datetime import date
 
 def criar_conta(session: Session, conta: Conta):
     statement = select(Conta).where(Conta.banco == conta.banco.value)
@@ -14,11 +15,7 @@ def criar_conta(session: Session, conta: Conta):
 
 def listar_contas(session: Session):
     contas = session.exec(select(Conta)).all()
-    if not contas:
-        print("Nenhuma conta encontrada no banco de dados.")
-    else:
-        for conta in contas:
-            print(f"ID: {conta.id}, Banco: {conta.banco}, Valor: {conta.valor}")
+    return contas if contas else []  # Retorna uma lista vazia se não houver contas
 
 def desativar_conta(session: Session, id: int):
     statement = select(Conta).where(Conta.id == id)
@@ -63,3 +60,15 @@ def movimentar_dinheiro(session: Session, historico: Historico):
 def total_contas(session: Session):
     contas = session.exec(select(Conta)).all()
     return sum(conta.valor for conta in contas) if contas else 0.0
+
+
+
+# Filtrar as movimentações financeiras dentro de um período específico
+
+def buscar_historicos_entre_datas(session: Session, data_inicio: date, data_fim: date):
+    with session:
+        statement = select(Historico).where(
+            (Historico.data >= data_inicio) & (Historico.data <= data_fim)
+        )
+        resultados = session.exec(statement).all()
+        return resultados

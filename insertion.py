@@ -10,7 +10,7 @@ def inserir_conta(banco: Bancos, status: Status, valor: float):
         print(f"Conta inserida com ID {nova_conta.id}")
 
 if __name__ == "__main__":
-    #inserir_conta(Bancos.ITAU, Status.ATIVO, 1500.75)
+    inserir_conta(Bancos.ITAU, Status.ATIVO, 1500.75)
     inserir_conta(Bancos.NUBANK, Status.ATIVO, 200.00)
     inserir_conta(Bancos.INTER, Status.ATIVO, 123.54)
     inserir_conta(Bancos.ITAU, Status.ATIVO, 11.25)
